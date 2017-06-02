@@ -12,11 +12,22 @@ var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
 
-io.on('connection', (socket) => {
+io.on('connection', function(socket) {
   console.log('New user connected');
 
-  socket.on('disconnect', () => {
+  socket.on('disconnect', function() {
     console.log('Client disconnected');
+  });
+
+  // create event
+  socket.emit('newMessage', {
+    from: 'zdenek@abc.com',
+    text: 'WTF',
+    createdAt:1234567890
+  });
+
+  socket.on('createMessage', (message) => {
+    console.log('create message', message);
   });
 
 });
